@@ -165,7 +165,7 @@ class NestedDefaultDict(collections.defaultdict):
     def __repr__(self):
         return repr(dict(self))
     
-def write_ptyrex_json(exp_dict):
+def write_ptyrex_json(exp_dict, iter_num):
     with h5py.File(exp_dict['data'], 'r') as f:
         data = f.get(exp_dict['data_key'])
         data_arr = np.array(data)
@@ -180,7 +180,7 @@ def write_ptyrex_json(exp_dict):
     
     params['process']['gpu_flag'] = 1
     params['process']['save_interval'] = 10
-    params['process']['PIE']['iterations'] = 100
+    params['process']['PIE']['iterations'] = iter_num
     params['process']['common']['source']['energy'] = [exp_dict['accel_voltage(eV)']]
     params['process']['common']['source']['radiation'] = 'electron'
     params['process']['common']['source']['flux'] = -1
