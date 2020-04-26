@@ -16,7 +16,60 @@ import json
 from sim_utils import e_lambda, get_potential, _sigma
 import collections
 
-#%%
+
+def get_raw_dir_list(sim_matrix_path, get_all = False):
+    '''
+    checks for the folders with only two files and identify them as raw
+    get_all set to True returns all the folders 
+    
+    Parameters
+    ___________
+    sim_matrix_path: str
+        full path holding the sim matrix
+    get_all: bool
+        Default False. Set to True if all folders needed
+    
+    Returns:
+    _________
+    raw_dirs: list
+        list of directories
+    '''
+    raw_dirs = []
+    it =  os.scandir(sim_matrix_path)
+    if get_all:
+        for entry in it:
+            if entry.is_dir():
+                raw_dirs.append(entry.path)
+    else:
+        for entry in it:
+            if entry.is_dir():
+     #           if 'recons' not in os.listdir(os.path.dirname(entry.path)): 
+                if len(os.listdir(entry.path)) == 2:
+                    raw_dirs.append(entry.path)
+    return raw_dirs
+
+
+def get_ptyREX_ready(sim_matrix_path):
+    '''
+    checks for the folders that have ptyREX json file 
+    
+    Returns
+    ptyREX_dirs: list
+        list of dirs
+    '''
+    ptyREX_dirs = []
+    it =  os.scandir(sim_matrix_path)
+    for entry in it:
+        if entry.is_dir():
+            it2 = os.scandir(entry.path)
+            for entry2 in it2:
+                if entry2.is_file():
+                    if entry2.name.startswith('ptyREX_'):
+                        ptyREX_dirs.append(entry.path)
+    return ptyREX_dirs
+
+
+
 def parse_params_file(params_file, h5_file, drop_unneeded = True):
     '''
     Reads the parameters text file into a dict to be fed into ptypy / pycho recons
@@ -91,7 +144,6 @@ def parse_params_file(params_file, h5_file, drop_unneeded = True):
     # using the sim parameters to calculate the bf disc rad
     det_pix_num = int((exp_dict['cell_dimension(m)'][0] * exp_dict['tile_uc'][0]) / (2 * exp_dict['sim_pixel_size(m)']))
     a_max = wavelength / (4 * exp_dict['sim_pixel_size(m)']) # alpha max
-    print(a_max, wavelength)
     pix_per_rad = (det_pix_num / 2) / a_max
     exp_dict['pupil_rad(pixels)'] = pix_per_rad * exp_dict['semi_angle(rad)']
     
@@ -123,12 +175,6 @@ def write_ptyrex_json(exp_dict):
     
     N_x = data_arr.shape[2]
     N_y = data_arr.shape[3]
-    
-    # binning = np.floor(256 / N_x)
-    
-    # adj_px_size = exp_dict['detector_pixel_size(m)'] * binning
-
-    
 
     params = NestedDefaultDict()
     
