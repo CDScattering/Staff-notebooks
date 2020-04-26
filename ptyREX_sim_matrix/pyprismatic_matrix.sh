@@ -2,8 +2,8 @@
 #$ -P tomography
 #$ -N pyprismatic_epsic
 #$ -l gpu_arch=Pascal
-#$ -o /dls/science/groups/e02/Mohsen/code/Git_Repos/Staff-notebooks/ptyREX_sim_matrix/logs/logs_pyprismatic
-#$ -e /dls/science/groups/e02/Mohsen/code/Git_Repos/Staff-notebooks/ptyREX_sim_matrix/logs/logs_pyprismatic
+#$ -o /dls/science/groups/e02/Mohsen/code/Git_Repos/Staff-notebooks/ptyREX_sim_matrix/logs/logs_pyprismatic_o
+#$ -e /dls/science/groups/e02/Mohsen/code/Git_Repos/Staff-notebooks/ptyREX_sim_matrix/logs/logs_pyprismatic_e
 #$ -l exclusive
 #$ -l m_mem_free=150G
 #$ -q high.q
