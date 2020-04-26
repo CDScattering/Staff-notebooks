@@ -243,13 +243,16 @@ def write_ptyrex_json(exp_dict, iter_num):
 
 
 #%%
-def get_ptyREX_recon_list(sim_matrix_path):
+def get_ptyREX_recon_list(sim_matrix_path, run_id=None):
     """
 
     Parameters
     ----------
     sim_matrix_path: str
         full path of the simulation matrix
+    run_id: str
+        default None. If provided the json files with run_id in their names will be
+        returned.
 
     Returns
     -------
@@ -259,15 +262,18 @@ def get_ptyREX_recon_list(sim_matrix_path):
     recon_dirs = []
     json_dirs = []
     common_dirs = []
+    if run_id is None:
+        run_id = ''
     for dirname, dirnames, filenames in os.walk(sim_matrix_path):
         for filename in filenames:
-            if os.path.splitext(filename)[1] == '.hdf':
+            if (os.path.splitext(filename)[1] == '.hdf') and (run_id in filename):
                 recon_dirs.append(os.path.join(dirname, filename))
-            if os.path.splitext(filename)[1] == '.json':
+            if (os.path.splitext(filename)[1] == '.json') and (run_id in filename):
                 json_dirs.append(os.path.join(dirname, filename))
     for json_file in json_dirs:
         if os.path.splitext(json_file)[0]+'.hdf' in recon_dirs:
             common_dirs.append(json_file)
+
     return common_dirs
 #%%
 
