@@ -27,7 +27,7 @@ def make_output_filename(root_path, xyz, conv_semiangle, def_val, step_size):
         probe convergence semi-angle (rad)
     def_val: float
         probe defocus (m)
-    sep_size: float
+    step_size: float
         probe step size (m)
     Returns
     ______________
@@ -181,8 +181,9 @@ def run_sim(submit_path, root_path, xyz, pixelSize, conv_semiangle, def_val, ste
     meta.cellDimY = cell_dims[1]
     meta.cellDimZ = cell_dims[2]
     
-    meta.tileX = 3
-    meta.tileY = 3
+    #TODO: make this an input param!
+    meta.tileX = 2
+    meta.tileY = 2
     meta.tileZ = 1
     meta.probeDefocus = def_val * 1e10
     meta.C3 = 0
